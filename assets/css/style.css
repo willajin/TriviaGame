@@ -31,10 +31,24 @@ body {
     letter-spacing: 1px;
 }
 
+.row {
+    padding: 5px;
+}
+
+#timer {
+    margin: 0 auto;
+    display: block;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 #question {
     font-weight: bold;
 }
 
 #message {
+    text-align: center;
     font-weight: bold;
+    font-size: 20px;
+    color: black;
 }

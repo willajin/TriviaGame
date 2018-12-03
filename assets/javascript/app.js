@@ -73,7 +73,6 @@ $(document).ready(function () {
 
         // display question and set timer
         displayTrivia();
-        timer = 10;
         setTimer();
     });
 
@@ -205,6 +204,7 @@ $(document).ready(function () {
         
         // display start button
         $("#start").show();
+        timer = 10;
     }
 
 });
