@@ -63,12 +63,20 @@ $(document).ready(function () {
     // start game 
     $("#start").click(function () {
         $(this).hide();
+        // clear scores
+        $("#score").empty();
+        // display question and set timer
         displayTrivia();
-        showQuestion = setInterval(setTimer, 1000);
+        setTimer();
     });
 
     // set timer
     function setTimer() {
+        showQuestion = setInterval(decreaseTimer, 1000);
+    }
+
+    // decrease timer
+    function decreaseTimer() {
         // display countdown
         $("#timer").html("Time remaining: " + timer);
         // decrease timer
@@ -79,6 +87,9 @@ $(document).ready(function () {
             stopTimer();
             // display message and correct answer
             $("#message").text("Too slow, time's up! The correct answer is: " + trivia[count].correctAnswer);
+            console.log(unanswered);
+            // reset and display next question
+            reset();
         }
     }
 
@@ -93,11 +104,11 @@ $(document).ready(function () {
         $("#question").html(trivia[count].question);
         // display answers array
         for (var i = 0; i < trivia[count].answers.length; i++) {
-            var button = $("<button>");
-            button.addClass("answerOption");
-            button.text(trivia[count].answers[i]);
-            button.attr("data-value", i);
-            $("#answers").append(button);
+            var p = $("<p>");
+            p.addClass("answerOption");
+            p.text(trivia[count].answers[i]);
+            p.attr("data-value", i);
+            $("#answers").append(p);
         }
 
         // get user input
@@ -111,7 +122,8 @@ $(document).ready(function () {
                 stopTimer();
                 correctAnswers++;
                 $("#message").text("Congrats, it's correct!");
-                
+                console.log(correctAnswers);
+
                 // display next trivia question
                 nextTrivia();
             }
@@ -121,6 +133,7 @@ $(document).ready(function () {
                 stopTimer();
                 incorrectAnswers++;
                 $("#message").text("Wrong...the correct answer is: " + trivia[count].correctAnswer);
+                console.log(incorrectAnswers);
 
                 // display next trivia question
                 nextTrivia();
@@ -138,11 +151,47 @@ $(document).ready(function () {
             endGame();
         }
 
-        // set timeout to display next trivia question
+        // reset for next question
         else {
-            setTimeout(displayTrivia, 3000);
+            reset();
         }
     }
+
+    // clear question/answer/message text and reset timer
+    function reset() {
+        setTimeout(function() {
+            // clear answer div
+            $("#answers").empty();
+            // clear message div
+            $("#message").empty();
+            // clear timer div
+            $("#timer").empty();
+            // reset timer
+            timer = 10;
+            setTimer();
+            displayTrivia();
+        }, 3000);
+    }
+    
     // display final screen
+    function endGame() {
+        // clear question div
+        $("#question").empty();
+        // clear answer div
+        $("#answers").empty();
+        // clear message div
+        $("#message").empty();
+        // clear timer div
+        $("#timer").empty();
+        // reset timer
+
+        // display final score
+        $("#score").append("<p>Correct answers: " + correctAnswers + "</p>");
+        $("#score").append("<p>Incorrect answers: " + incorrectAnswers + "</p>");
+        $("#score").append("<p>Unanswered: " + unanswered + "</p>");
+        
+        // display start button
+        $("#start").show();
+    }
 
 });
