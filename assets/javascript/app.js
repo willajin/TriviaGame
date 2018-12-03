@@ -62,11 +62,18 @@ $(document).ready(function () {
 
     // start game 
     $("#start").click(function () {
+        // hide start button
         $(this).hide();
+
         // clear scores
         $("#score").empty();
+        correctAnswers = 0;         // number of correct answers
+        incorrectAnswers = 0;       // number of incorrect answers
+        unanswered = 0;
+
         // display question and set timer
         displayTrivia();
+        timer = 10;
         setTimer();
     });
 
@@ -79,17 +86,21 @@ $(document).ready(function () {
     function decreaseTimer() {
         // display countdown
         $("#timer").html("Time remaining: " + timer);
+        
         // decrease timer
         timer--;
+        
         // stop timer at 0
         if (timer <= 0) {
             unanswered++;
             stopTimer();
+            
             // display message and correct answer
             $("#message").text("Too slow, time's up! The correct answer is: " + trivia[count].correctAnswer);
             console.log(unanswered);
-            // reset and display next question
-            reset();
+            
+            // display next question
+            nextTrivia();
         }
     }
 
@@ -102,6 +113,7 @@ $(document).ready(function () {
     function displayTrivia() {
         // display question in trivia array
         $("#question").html(trivia[count].question);
+        
         // display answers array
         for (var i = 0; i < trivia[count].answers.length; i++) {
             var p = $("<p>");
@@ -166,7 +178,8 @@ $(document).ready(function () {
             $("#message").empty();
             // clear timer div
             $("#timer").empty();
-            // reset timer
+            
+            // reset timer and display next question
             timer = 10;
             setTimer();
             displayTrivia();
